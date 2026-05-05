@@ -33,9 +33,9 @@ changelog:
   sort: asc
 
 nfpms:
-  - maintainer: Home Assistant <hello@home-assistant.io>
-    description: Home Assistant OS Agent
-    homepage: https://www.home-assistant.io
+  - maintainer: Muthur Command <hello@muthur-command.com>
+    description: Muthur Command OS Agent
+    homepage: https://www.muthur-command.com
     license: Apache 2.0
     section: default
     priority: extra
@@ -53,10 +53,10 @@ nfpms:
       {{ with .Mips }}_{{ . }}{{ end }}
       {{ end }}
     contents:
-      - src: contrib/haos-agent.service
-        dst: /usr/lib/systemd/system/haos-agent.service
-      - src: contrib/io.hass.conf
-        dst: /etc/dbus-1/system.d/io.hass.conf
+      - src: contrib/muthur-command-agent.service
+        dst: /usr/lib/systemd/system/muthur-command-agent.service
+      - src: contrib/io.muthurcommand.conf
+        dst: /etc/dbus-1/system.d/io.muthurcommand.conf
     scripts:
       postinstall: contrib/debian/postinstall.sh
       preremove: contrib/debian/preremove.sh

@@ -1,11 +1,11 @@
 [Unit]
-Description=Home Assistant OS Agent
+Description=Muthur Command OS Agent
 DefaultDependencies=no
 Requires=dbus.socket udisks2.service
 After=dbus.socket sysinit.target
 
 [Service]
-BusName=io.hass.os
+BusName=io.muthurcommand.os
 Type=notify
 Restart=always
 RestartSec=5s

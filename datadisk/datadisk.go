@@ -10,8 +10,8 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
-	"github.com/home-assistant/os-agent/udisks2"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	"github.com/muthur-command/os-agent/udisks2"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
@@ -93,8 +93,8 @@ func (d datadisk) ReloadDevice() (bool, *dbus.Error) {
 }
 
 const (
-	objectPath = "/io/hass/os/DataDisk"
-	ifaceName  = "io.hass.os.DataDisk"
+	objectPath = "/io/muthurcommand/os/DataDisk"
+	ifaceName  = "io.muthurcommand.os.DataDisk"
 )
 
 func InitializeDBus(conn *dbus.Conn) {

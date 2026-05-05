@@ -2,7 +2,7 @@ package lineinfile
 
 import (
 	"fmt"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	logging "github.com/muthur-command/os-agent/utils/log"
 	"github.com/natefinch/atomic"
 	"os"
 	re "regexp"

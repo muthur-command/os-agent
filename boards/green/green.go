@@ -5,13 +5,13 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
-	"github.com/home-assistant/os-agent/utils/led"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	"github.com/muthur-command/os-agent/utils/led"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	objectPath = "/io/hass/os/Boards/Green"
-	ifaceName  = "io.hass.os.Boards.Green"
+	objectPath = "/io/muthurcommand/os/Boards/Green"
+	ifaceName  = "io.muthurcommand.os.Boards.Green"
 )
 
 var (

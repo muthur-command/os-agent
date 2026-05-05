@@ -5,12 +5,12 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
-	logging "github.com/home-assistant/os-agent/utils/log"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	objectPath = "/io/hass/os/Boards/Supervised"
-	ifaceName  = "io.hass.os.Boards.Supervised"
+	objectPath = "/io/muthurcommand/os/Boards/Supervised"
+	ifaceName  = "io.muthurcommand.os.Boards.Supervised"
 )
 
 type supervised struct {

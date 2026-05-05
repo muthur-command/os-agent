@@ -5,13 +5,13 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
-	"github.com/home-assistant/os-agent/utils/bootfile"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	"github.com/muthur-command/os-agent/utils/bootfile"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	objectPath = "/io/hass/os/Boards/Yellow"
-	ifaceName  = "io.hass.os.Boards.Yellow"
+	objectPath = "/io/muthurcommand/os/Boards/Yellow"
+	ifaceName  = "io.muthurcommand.os.Boards.Yellow"
 	bootConfig = "/mnt/boot/config.txt"
 )
 

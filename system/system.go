@@ -8,14 +8,14 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 
-	logging "github.com/home-assistant/os-agent/utils/log"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	objectPath                = "/io/hass/os/System"
-	ifaceName                 = "io.hass.os.System"
-	labelDataFileSystem       = "hassos-data"
-	labelOverlayFileSystem    = "hassos-overlay"
+	objectPath                = "/io/muthurcommand/os/System"
+	ifaceName                 = "io.muthurcommand.os.System"
+	labelDataFileSystem       = "mcos-data"
+	labelOverlayFileSystem    = "mcos-overlay"
 	kernelCommandLine         = "/mnt/boot/cmdline.txt"
 	tmpKernelCommandLine      = "/mnt/boot/.tmp.cmdline.txt"
 	sshAuthKeyFileName        = "/root/.ssh/authorized_keys"

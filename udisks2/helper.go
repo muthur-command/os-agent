@@ -6,7 +6,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
-	logging "github.com/home-assistant/os-agent/utils/log"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 type UDisks2Helper struct {

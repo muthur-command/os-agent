@@ -1,4 +1,4 @@
-module github.com/home-assistant/os-agent
+module github.com/muthur-command/os-agent
 
 go 1.25
 

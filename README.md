@@ -1,46 +1,37 @@
-# Agent for Home Assistant OS
+# os-agent
 
-This is the OS Agent for Home Assistant. It is used for Home Assistant
-OS and Home Assistant Supervised installation types and it allows the
-Home Assistant Supervisor to communicate with the host operating system.
+中文文档: [`README.zh-CN.md`](./README.zh-CN.md)
 
-## Installation & Update
+Host-side D-Bus agent for **Muthur Command OS**.  
+It exposes privileged host capabilities to Supervisor over system D-Bus
+(`io.muthurcommand.os`) without running Supervisor with unrestricted host access.
 
-### Using the Home Assistant Operating System
+## Release Artifacts
 
-The OS Agent is pre-installed with the Home Assistant Operating System.
+- Debian package (for Supervised installs): from [latest release](https://github.com/muthur-command/os-agent/releases/latest)
+- In MCOS images: preinstalled by the `operating-system` build pipeline
+- D-Bus service name: **`io.muthurcommand.os`**
+- Root object path: **`/io/muthurcommand/os`**
 
-Updates are part of the Home Assistant Operating System updates, which
-the Home Assistant UI will offer to upgrade to when there is a new version
-available.
+## Install / Upgrade
 
-### Using Home Assistant Supervised on Debian
+For **Muthur Command OS**, no manual action is required (preinstalled).
 
-Download the latest Debian package from OS Agent GitHub release page at:
-
-<https://github.com/home-assistant/os-agent/releases/latest>
-
-Next, install (or update) the downloaded Debian package using:
+For **Muthur Command Supervised (Debian)**:
 
 ```shell
-sudo dpkg -i os-agent_1.0.0_linux_x86_64.deb
+sudo dpkg -i os-agent_<version>_linux_<arch>.deb
 ```
 
-Note: Replace the `deb` file in the above example with the file you
-have downloaded from the releases page.
-
-You can test if the installation was successful by running:
+## Verify
 
 ```bash
-busctl introspect --system io.hass.os /io/hass/os
+busctl introspect --system io.muthurcommand.os /io/muthurcommand/os
 ```
 
-This should **not** return an error. If you get an object introspection
-with `io.hass.os`, `interface` etc. OS Agent is working as expected.
+If the command returns introspection data, the service is reachable.
 
 ## Uninstall
-
-To remove OS Agent from your system use the Debian packaging system:
 
 ```shell
 sudo dpkg -r os-agent
@@ -48,15 +39,21 @@ sudo dpkg -r os-agent
 
 ## Development
 
-### Compile
+Build locally:
 
 ```shell
-go build -ldflags "-X main.version="
+go build -ldflags "-X main.version=<dev-version>"
 ```
 
-### Tests
+Quick D-Bus checks:
 
 ```shell
-gdbus introspect --system --dest io.hass.os --object-path /io/hass/os
-gdbus call --system --dest io.hass.os --object-path /io/hass/os/Boards/Yellow --method org.freedesktop.DBus.Properties.Set io.hass.os.Boards.Yellow PowerLED "<false>"
+gdbus introspect --system --dest io.muthurcommand.os --object-path /io/muthurcommand/os
+gdbus call --system --dest io.muthurcommand.os --object-path /io/muthurcommand/os/Boards/Yellow --method org.freedesktop.DBus.Properties.Set io.muthurcommand.os.Boards.Yellow PowerLED "<false>"
 ```
+
+## Origin
+
+- **Upstream:** [home-assistant/os-agent](https://github.com/home-assistant/os-agent)
+- **In this repo:** maintained for Muthur Command OS host integration and Supervisor compatibility
+- **License:** Apache-2.0 (retain upstream copyright); see [`LICENSE`](./LICENSE)

@@ -5,16 +5,16 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
-	"github.com/home-assistant/os-agent/utils/lineinfile"
+	"github.com/muthur-command/os-agent/utils/lineinfile"
 	"regexp"
 	"strings"
 
-	logging "github.com/home-assistant/os-agent/utils/log"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	objectPath    = "/io/hass/os/Config/Timesyncd"
-	ifaceName     = "io.hass.os.Config.Timesyncd"
+	objectPath    = "/io/muthurcommand/os/Config/Timesyncd"
+	ifaceName     = "io.muthurcommand.os.Config.Timesyncd"
 	timesyncdConf = "/etc/systemd/timesyncd.conf"
 )
 

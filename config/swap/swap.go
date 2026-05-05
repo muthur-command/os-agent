@@ -5,8 +5,8 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
-	"github.com/home-assistant/os-agent/utils/lineinfile"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	"github.com/muthur-command/os-agent/utils/lineinfile"
+	logging "github.com/muthur-command/os-agent/utils/log"
 	"os"
 	"regexp"
 	"strconv"
@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	objectPath     = "/io/hass/os/Config/Swap"
-	ifaceName      = "io.hass.os.Config.Swap"
+	objectPath     = "/io/muthurcommand/os/Config/Swap"
+	ifaceName      = "io.muthurcommand.os.Config.Swap"
 	swapPath       = "/etc/default/haos-swapfile"
 	swappinessPath = "/etc/sysctl.d/15-swappiness.conf"
 )

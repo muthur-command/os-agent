@@ -1,5 +1,5 @@
 {
-	"name": "Go Home Assistant OS Agent",
+	"name": "Go Muthur Command OS Agent",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {

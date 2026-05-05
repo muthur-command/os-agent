@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"time"
 
 	"github.com/coreos/go-systemd/v22/daemon"
@@ -9,20 +10,19 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
-	"github.com/home-assistant/os-agent/apparmor"
-	"github.com/home-assistant/os-agent/boards"
-	"github.com/home-assistant/os-agent/cgroup"
-	"github.com/home-assistant/os-agent/config/swap"
-	"github.com/home-assistant/os-agent/config/timesyncd"
-	"github.com/home-assistant/os-agent/datadisk"
-	"github.com/home-assistant/os-agent/system"
-	logging "github.com/home-assistant/os-agent/utils/log"
+	"github.com/muthur-command/os-agent/apparmor"
+	"github.com/muthur-command/os-agent/boards"
+	"github.com/muthur-command/os-agent/cgroup"
+	"github.com/muthur-command/os-agent/config/swap"
+	"github.com/muthur-command/os-agent/config/timesyncd"
+	"github.com/muthur-command/os-agent/datadisk"
+	"github.com/muthur-command/os-agent/system"
+	logging "github.com/muthur-command/os-agent/utils/log"
 )
 
 const (
-	busName    = "io.hass.os"
-	objectPath = "/io/hass/os"
-	sentryDsn  = "https://c74e811a96e4413a95caaaa5ae05f851@o427061.ingest.sentry.io/5710878"
+	busName    = "io.muthurcommand.os"
+	objectPath = "/io/muthurcommand/os"
 )
 
 var (
@@ -36,17 +36,20 @@ func main() {
 	logging.Info.Printf("Start OS-Agent %s", version)
 
 	// Sentry
-	err := sentry.Init(sentry.ClientOptions{
-		Dsn:        sentryDsn,
-		Release:    version,
-		BeforeSend: filterSentry,
-	})
-	if err != nil {
-		logging.Critical.Fatalf("Sentry init: %s", err)
-	}
+	sentryDsn := os.Getenv("SENTRY_DSN")
+	if sentryDsn != "" {
+		err := sentry.Init(sentry.ClientOptions{
+			Dsn:        sentryDsn,
+			Release:    version,
+			BeforeSend: filterSentry,
+		})
+		if err != nil {
+			logging.Critical.Fatalf("Sentry init: %s", err)
+		}
 
-	defer sentry.Flush(2 * time.Second)
-	defer sentry.Recover()
+		defer sentry.Flush(2 * time.Second)
+		defer sentry.Recover()
+	}
 
 	// Connect DBus
 	conn, err := dbus.SystemBus()
@@ -54,7 +57,7 @@ func main() {
 		logging.Critical.Fatalf("DBus connection: %s", err)
 	}
 
-	// Init Dbus io.hass.os
+	// Init Dbus io.muthurcommand.os
 	reply, err := conn.RequestName(busName, dbus.NameFlagDoNotQueue)
 	if err != nil {
 		logging.Critical.Panic(err)
