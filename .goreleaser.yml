@@ -33,7 +33,7 @@ changelog:
   sort: asc
 
 nfpms:
-  - maintainer: Muthur Command <hello@muthur-command.com>
+  - maintainer: Muthur Command <morty@muthur-command.com>
     description: Muthur Command OS Agent
     homepage: https://www.muthur-command.com
     license: Apache 2.0
