@@ -1,0 +1,100 @@
+# After an os-agent GitHub Release, open PRs in repos that pin OS_AGENT_VERSION.
+# Requires org/repo secret OS_AGENT_DOWNSTREAM_BUMP_TOKEN (PAT or GitHub App token)
+# with contents:write on operating-system and devcontainer.
+#
+# Renovate (.github/renovate.json in those repos) is a backup on a 12h schedule.
+
+name: Bump downstream os-agent pins
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag (e.g. 2026.06.0)
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - operating-system
+          - devcontainer
+    steps:
+      - name: Check downstream bump token
+        id: token
+        env:
+          OS_AGENT_DOWNSTREAM_BUMP_TOKEN: ${{ secrets.OS_AGENT_DOWNSTREAM_BUMP_TOKEN }}
+        run: |
+          if [[ -z "${OS_AGENT_DOWNSTREAM_BUMP_TOKEN}" ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::OS_AGENT_DOWNSTREAM_BUMP_TOKEN is not set. Skipping downstream PRs for ${{ matrix.repo }}."
+            echo "Configure a PAT with contents:write on operating-system and devcontainer."
+            echo "Renovate in those repos will still open PRs on its schedule if the Renovate app is enabled."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Normalize release version
+        if: steps.token.outputs.skip != 'true'
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            tag="${{ inputs.tag }}"
+          else
+            tag="${{ github.event.release.tag_name }}"
+          fi
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "pin=${tag#mc_}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout os-agent (scripts)
+        if: steps.token.outputs.skip != 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Checkout ${{ matrix.repo }}
+        if: steps.token.outputs.skip != 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: muthur-command/${{ matrix.repo }}
+          ref: mc
+          token: ${{ secrets.OS_AGENT_DOWNSTREAM_BUMP_TOKEN }}
+          path: consumer
+          persist-credentials: false
+
+      - name: Apply os-agent pin bump
+        if: steps.token.outputs.skip != 'true'
+        run: |
+          chmod +x ./scripts/bump-downstream-os-agent-pin.sh
+          ./scripts/bump-downstream-os-agent-pin.sh \
+            "${{ matrix.repo }}" \
+            "${{ github.workspace }}/consumer" \
+            "${{ steps.version.outputs.tag }}"
+
+      - name: Create pull request
+        if: steps.token.outputs.skip != 'true'
+        uses: peter-evans/create-pull-request@2f38cd26bfebe301a5ee90bdd6550a69dc3ef23f # v7.0.4
+        with:
+          token: ${{ secrets.OS_AGENT_DOWNSTREAM_BUMP_TOKEN }}
+          path: consumer
+          base: mc
+          branch: "bump/os-agent-${{ steps.version.outputs.pin }}"
+          delete-branch: true
+          labels: dependencies
+          title: "chore(deps): bump os-agent to ${{ steps.version.outputs.pin }}"
+          commit-message: "chore(deps): bump os-agent to ${{ steps.version.outputs.pin }}"
+          body: |
+            Automated PR from [os-agent](https://github.com/muthur-command/os-agent) release `${{ steps.version.outputs.tag }}`.
+
+            **You still need to (manual):**
+            - Review and merge this PR
+            - For **operating-system**: publish a new OS release so MCOS images include the new agent
+            - For **devcontainer**: rebuild dev images if you rely on the pinned deb in `common/install/os-agent`
+
+            Also tracked by Renovate (`custom.regex` on `muthur-command/os-agent` releases).
