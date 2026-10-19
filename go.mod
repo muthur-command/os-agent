@@ -7,7 +7,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.7.0
 	github.com/fntlnz/mountinfo v1.0.1
 	github.com/getsentry/sentry-go v0.48.0
-	github.com/godbus/dbus/v5 v5.2.2
+	github.com/godbus/dbus/v5 v5.2.4
 	github.com/natefinch/atomic v1.0.1
 	github.com/opencontainers/runtime-spec v1.3.0
 )
